@@ -32,7 +32,10 @@ def get_title_from_document_information_dictionary(doc: PDFDocument) -> Optional
                 logger.info("title found in document information dictionary: %s", title)
                 # not sure if this is always the case but I see title is bytes
                 if isinstance(title, bytes):
-                    title = title.decode("utf-8")
+                    try:
+                        title = title.decode("utf-8")
+                    except UnicodeDecodeError:
+                        return None
                 # return only if it is not empty
                 if len(title.strip()) > 0:
                     return title
